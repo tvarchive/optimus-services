@@ -1,0 +1,37 @@
+group 'com.testvagrant'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.7.RELEASE")
+    }
+}
+
+jar {
+    baseName = 'optimusio-data-rest'
+    version = '0.1.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-data-rest")
+    compile("org.springframework.boot:spring-boot-starter-data-mongodb")
+    compile 'org.springframework.restdocs:spring-restdocs-mockmvc:2.0.0.RELEASE'
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile 'io.rest-assured:rest-assured:3.0.6'
+}
