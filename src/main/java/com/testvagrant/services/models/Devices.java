@@ -1,5 +1,7 @@
 package com.testvagrant.services.models;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
@@ -12,7 +14,8 @@ public class Devices {
     private String platformVersion;
     private String udid;
     private String runsOn;
-    private ObjectId buildId;
+
+    @JsonSerialize(using = ToStringSerializer.class) private ObjectId buildId;
     private byte[] screenshot = new byte[]{};
 
 

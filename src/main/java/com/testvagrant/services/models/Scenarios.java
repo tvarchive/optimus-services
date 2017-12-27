@@ -1,11 +1,12 @@
 package com.testvagrant.services.models;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
-import java.util.List;
 
 @Document
 public class Scenarios {
@@ -14,10 +15,12 @@ public class Scenarios {
 
     private String scenarioName;
     private Integer dataRowNumber = 0;
-    private List<Integer> locationLines;
+    private Integer location;
     private String deviceUdid;
     private String[] tags;
     private Date startTime;
+
+    @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId buildId;
     private String status;
     private Boolean completed = false;
@@ -43,12 +46,12 @@ public class Scenarios {
         this.dataRowNumber = dataRowNumber;
     }
 
-    public List<Integer> getLocationLines() {
-        return locationLines;
+    public Integer getLocation() {
+        return location;
     }
 
-    public void setLocationLines(List<Integer> locationLines) {
-        this.locationLines = locationLines;
+    public void setLocation(Integer location) {
+        this.location = location;
     }
 
     public String getDeviceUdid() {
