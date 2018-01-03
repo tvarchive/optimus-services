@@ -11,7 +11,9 @@ public class Builds {
     @Id private String id;
     private Date buildStartTime;
     private Date buildEndTime;
-    private int scenarioCount;
+    private int buildScenarios;
+    private int buildSuccessRate;
+    private int scenariosCount;
     private String scenarioSuccessRate;
 
     public String getId() {
@@ -38,12 +40,28 @@ public class Builds {
         this.buildEndTime = buildEndTime;
     }
 
-    public int getScenarioCount() {
-        return scenarioCount;
+    public int getScenariosCount() {
+        return scenariosCount;
     }
 
-    public void setScenarioCount(int scenarioCount) {
-        this.scenarioCount = scenarioCount;
+    public void setScenariosCount(int scenariosCount) {
+        this.scenariosCount = scenariosCount;
+    }
+
+    public int getBuildScenarios() {
+        return buildScenarios;
+    }
+
+    public void setBuildScenarios(int buildScenarios) {
+        this.buildScenarios = buildScenarios;
+    }
+
+    public int getBuildSuccessRate() {
+        return buildSuccessRate;
+    }
+
+    public void setBuildSuccessRate(int buildSuccessRate) {
+        this.buildSuccessRate = buildSuccessRate;
     }
 
     public String getScenarioSuccessRate() {
@@ -53,6 +71,5 @@ public class Builds {
     public void setScenarioSuccessRate(String scenarioSuccessRate) {
         this.scenarioSuccessRate = scenarioSuccessRate;
     }
-
 
 }
