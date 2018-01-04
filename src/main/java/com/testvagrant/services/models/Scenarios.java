@@ -22,7 +22,7 @@ public class Scenarios {
 
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId buildId;
-    private String status;
+    private String status = "failed";
     private Boolean completed = false;
     private Date endTime = new Date();
     private Integer timeTaken = 0;
