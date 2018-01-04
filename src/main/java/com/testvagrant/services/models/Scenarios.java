@@ -29,6 +29,8 @@ public class Scenarios {
     private String scenarioTimeline = "";
     private String steps = "";
     private byte[] failedOnScreen = new byte[]{};
+    private String stacktrace;
+    private String activity;
 
     public String getScenarioName() {
         return scenarioName;
@@ -148,5 +150,21 @@ public class Scenarios {
 
     public void setFailedOnScreen(byte[] failedOnScreen) {
         this.failedOnScreen = failedOnScreen;
+    }
+
+    public String getStacktrace() {
+        return stacktrace;
+    }
+
+    public void setStacktrace(String stacktrace) {
+        this.stacktrace = stacktrace;
+    }
+
+    public String getActivity() {
+        return activity;
+    }
+
+    public void setActivity(String activity) {
+        this.activity = activity;
     }
 }

@@ -6,6 +6,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
+import java.util.List;
+
 @RepositoryRestResource(collectionResourceRel = "scenarios", path = "scenarios")
 public interface ScenarioRepository extends MongoRepository<Scenarios,String> {
 
@@ -18,4 +20,6 @@ public interface ScenarioRepository extends MongoRepository<Scenarios,String> {
     Long countByBuildId(@Param("buildId") ObjectId buildId);
 
     Long countByBuildIdAndStatus(@Param("buildId") ObjectId buildId, @Param("status") String status);
+
+    List<Scenarios> findByBuildIdAndDeviceUdidAndActivity(@Param("buildId") ObjectId buildId, @Param("deviceUdid") String deviceUdid, @Param("activity") String activity);
 }
