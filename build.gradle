@@ -25,6 +25,10 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    dev
+}
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -34,4 +38,16 @@ dependencies {
     compile 'org.springframework.restdocs:spring-restdocs-mockmvc:2.0.0.RELEASE'
     testCompile("org.springframework.boot:spring-boot-starter-test")
     testCompile 'io.rest-assured:rest-assured:3.0.6'
+    dev("org.springframework.boot:spring-boot-devtools")
+}
+
+bootRun {
+
+    classpath = sourceSets.main.runtimeClasspath + configurations.dev
+}
+
+
+jar {
+    baseName = "optimus-services"
+    version = "1.0"
 }
