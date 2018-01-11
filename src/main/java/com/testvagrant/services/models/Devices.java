@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
+import java.util.Date;
+
 public class Devices {
 
     @Id private String id;
@@ -14,6 +16,7 @@ public class Devices {
     private String platformVersion;
     private String udid;
     private String runsOn;
+    private Date created_date = new Date();
 
     @JsonSerialize(using = ToStringSerializer.class) private ObjectId buildId;
     private byte[] screenshot = new byte[]{};
@@ -89,5 +92,13 @@ public class Devices {
 
     public void setScreenshot(byte[] screenshot) {
         this.screenshot = screenshot;
+    }
+
+    public Date getCreated_date() {
+        return created_date;
+    }
+
+    public void setCreated_date(Date created_date) {
+        this.created_date = created_date;
     }
 }

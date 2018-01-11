@@ -8,10 +8,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class DeviceController {
@@ -24,7 +21,7 @@ public class DeviceController {
         this.devicesRepository = devicesRepository;
     }
 
-    @GetMapping("/devices/findMatchingDevice")
+    @PostMapping("/devices/findMatchingDevice")
     public Devices findMatchingDevice(@RequestParam("buildId")ObjectId buildId, @RequestBody Devices devices) {
         Query query = getDeviceQuery(devices);
         query.addCriteria(Criteria.where("buildId").is(buildId).and("status").is("Available"));
@@ -44,7 +41,7 @@ public class DeviceController {
             query.addCriteria(Criteria.where("deviceName").is(devices.getDeviceName()));
         }
 
-        if(!StringUtils.isEmpty(devices.getRunsOn())) {
+        if(!StringUtils.isEmpty(devices.getRunsOn()) && !devices.getRunsOn().equalsIgnoreCase("any")) {
             query.addCriteria(Criteria.where("runsOn").is(devices.getRunsOn()));
         }
 

@@ -31,6 +31,7 @@ public class Scenarios {
     private byte[] failedOnScreen = new byte[]{};
     private String stacktrace;
     private String activity;
+    private Date created_date = new Date();
 
     public String getScenarioName() {
         return scenarioName;
@@ -166,5 +167,13 @@ public class Scenarios {
 
     public void setActivity(String activity) {
         this.activity = activity;
+    }
+
+    public Date getCreated_date() {
+        return created_date;
+    }
+
+    public void setCreated_date(Date created_date) {
+        this.created_date = created_date;
     }
 }

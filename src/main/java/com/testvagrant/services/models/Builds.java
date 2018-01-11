@@ -16,6 +16,7 @@ public class Builds {
     private int scenariosCount;
     private String scenarioSuccessRate;
     private String crashlytics;
+    private Date created_date = new Date();
 
     public String getId() {
         return id;
@@ -79,5 +80,13 @@ public class Builds {
 
     public void setCrashlytics(String crashlytics) {
         this.crashlytics = crashlytics;
+    }
+
+    public Date getCreated_date() {
+        return created_date;
+    }
+
+    public void setCreated_date(Date created_date) {
+        this.created_date = created_date;
     }
 }
