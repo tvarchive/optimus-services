@@ -4,6 +4,8 @@
 /build/
 .idea/
 /out/
+*.iml
+
 
 # Ignore Gradle GUI config
 gradle-app.setting

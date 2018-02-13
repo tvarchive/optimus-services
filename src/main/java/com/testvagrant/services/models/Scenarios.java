@@ -13,6 +13,7 @@ public class Scenarios {
 
     @Id private String id;
 
+    private String featureName;
     private String scenarioName;
     private Integer dataRowNumber = 0;
     private Integer location;
@@ -32,6 +33,14 @@ public class Scenarios {
     private String stacktrace;
     private String activity;
     private Date created_date = new Date();
+
+    public String getFeatureName() {
+        return featureName;
+    }
+
+    public void setFeatureName(String featureName) {
+        this.featureName = featureName;
+    }
 
     public String getScenarioName() {
         return scenarioName;
