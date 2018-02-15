@@ -15,4 +15,8 @@ public interface BuildsRepository extends MongoRepository<Builds,String> {
     List<Builds> findAllBuildsByOrderByBuildStartTimeDesc();
 
     Builds findById(@Param("id")ObjectId id);
+
+    List<Builds> findAllBuildsByScenariosCount(@Param("scenariosCount") int scenariosCount);
+
+    Long removeByScenariosCount(@Param("scenariosCount") int scenariosCount);
 }
