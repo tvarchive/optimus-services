@@ -9,6 +9,7 @@ import java.util.Date;
 public class Builds {
 
     @Id private String id;
+    private String runMode;
     private Date buildStartTime;
     private Date buildEndTime;
     private int buildScenarios;
@@ -17,6 +18,15 @@ public class Builds {
     private String scenarioSuccessRate;
     private String crashlytics;
     private Date created_date = new Date();
+
+
+    public String getRunMode() {
+        return runMode;
+    }
+
+    public void setRunMode(String runMode) {
+        this.runMode = runMode;
+    }
 
     public String getId() {
         return id;

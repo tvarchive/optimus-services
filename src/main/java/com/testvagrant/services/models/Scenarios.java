@@ -17,12 +17,14 @@ public class Scenarios {
     private String scenarioName;
     private Integer dataRowNumber = 0;
     private Integer location;
-    private String deviceUdid;
+
     private String[] tags;
     private Date startTime;
 
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId buildId;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private ObjectId deviceId;
     private String status = "failed";
     private Boolean completed = false;
     private Date endTime = new Date();
@@ -33,6 +35,14 @@ public class Scenarios {
     private String stacktrace;
     private String activity;
     private Date created_date = new Date();
+
+    public ObjectId getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(ObjectId deviceId) {
+        this.deviceId = deviceId;
+    }
 
     public String getFeatureName() {
         return featureName;
@@ -64,14 +74,6 @@ public class Scenarios {
 
     public void setLocation(Integer location) {
         this.location = location;
-    }
-
-    public String getDeviceUdid() {
-        return deviceUdid;
-    }
-
-    public void setDeviceUdid(String deviceUdid) {
-        this.deviceUdid = deviceUdid;
     }
 
     public String[] getTags() {

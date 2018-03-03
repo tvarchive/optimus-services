@@ -35,9 +35,9 @@ public class ScenarioController {
         return scenarios.getMappedResults();
     }
 
-    @RequestMapping("/scenarios/distinctUdid")
-    public List<Scenarios> distinctUdidsOfScenario(@RequestParam("buildId")ObjectId buildId) {
-        Aggregation aggregation = Aggregation.newAggregation(Aggregation.group(Fields.fields("deviceUdid","buildId","activity")));
+    @RequestMapping("/scenarios/distinctDeviceId")
+    public List<Scenarios> distinctdeviceIdsOfScenario(@RequestParam("buildId")ObjectId buildId) {
+        Aggregation aggregation = Aggregation.newAggregation(Aggregation.group(Fields.fields("deviceId","buildId","activity")));
         AggregationResults<Scenarios> scenarios = mongoTemplate.aggregate(aggregation, "scenarios", Scenarios.class);
         try {
             return scenarios.getMappedResults().stream().filter(scenarios1 -> scenarios1.getBuildId().equals(buildId)).collect(Collectors.toList());

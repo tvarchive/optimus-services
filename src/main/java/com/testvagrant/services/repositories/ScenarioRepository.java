@@ -9,17 +9,17 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import java.util.List;
 
 @RepositoryRestResource(collectionResourceRel = "scenarios", path = "scenarios")
-public interface ScenarioRepository extends MongoRepository<Scenarios,String> {
+public interface ScenarioRepository extends MongoRepository<Scenarios, String> {
 
-    Scenarios findByBuildIdAndScenarioName(@Param("buildId")ObjectId buildId, @Param("scenarioName") String scenarioName);
+    Scenarios findByBuildIdAndScenarioName(@Param("buildId") ObjectId buildId, @Param("scenarioName") String scenarioName);
 
-    Long countByBuildIdAndScenarioName(@Param("buildId")ObjectId buildId, @Param("scenarioName") String scenarioName);
+    Long countByBuildIdAndScenarioName(@Param("buildId") ObjectId buildId, @Param("scenarioName") String scenarioName);
 
-    Scenarios findByBuildIdAndScenarioNameAndLocationAndDeviceUdid(@Param("buildId")ObjectId buildId, @Param("scenarioName") String scenarioName, @Param("location")Integer location,@Param("deviceUdid") String deviceUdid);
+    Scenarios findByBuildIdAndScenarioNameAndLocationAndDeviceId(@Param("buildId") ObjectId buildId, @Param("scenarioName") String scenarioName, @Param("location") Integer location, @Param("deviceId") ObjectId deviceId);
 
     Long countByBuildId(@Param("buildId") ObjectId buildId);
 
     Long countByBuildIdAndStatus(@Param("buildId") ObjectId buildId, @Param("status") String status);
 
-    List<Scenarios> findByBuildIdAndDeviceUdidAndActivity(@Param("buildId") ObjectId buildId, @Param("deviceUdid") String deviceUdid, @Param("activity") String activity);
+    List<Scenarios> findByBuildIdAndDeviceIdAndActivity(@Param("buildId") ObjectId buildId, @Param("deviceId") ObjectId deviceId, @Param("activity") String activity);
 }
