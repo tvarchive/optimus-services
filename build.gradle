@@ -12,7 +12,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.7.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.0.RELEASE")
     }
 }
 
@@ -33,12 +33,12 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-data-rest")
-    compile("org.springframework.boot:spring-boot-starter-data-mongodb")
+    compile("org.springframework.boot:spring-boot-starter-data-rest:2.0.0.RELEASE")
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb', version: '2.0.0.RELEASE'
     compile 'org.springframework.restdocs:spring-restdocs-mockmvc:2.0.0.RELEASE'
-    testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.0.0.RELEASE'
     testCompile 'io.rest-assured:rest-assured:3.0.6'
-    dev("org.springframework.boot:spring-boot-devtools")
+    dev("org.springframework.boot:spring-boot-devtools:2.0.0.RELEASE")
 }
 
 bootRun {

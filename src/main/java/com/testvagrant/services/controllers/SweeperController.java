@@ -1,7 +1,7 @@
 package com.testvagrant.services.controllers;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
+import com.mongodb.client.model.Filters;
+import org.bson.conversions.Bson;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -47,19 +47,19 @@ public class SweeperController {
     }
 
     private void deleteBuildsOlderThanThisDate(Date date) {
-        mongoTemplate.getCollection("builds").remove(getDateDBObject(date));
+        mongoTemplate.getCollection("builds").deleteMany(getDateDBObject(date));
     }
 
     private void deleteDevicesOlderThanThisDate(Date date) {
-        mongoTemplate.getCollection("devices").remove(getDateDBObject(date));
+        mongoTemplate.getCollection("devices").deleteMany(getDateDBObject(date));
     }
 
     private void deleteScenariosOlderThanThisDate(Date date) {
-        mongoTemplate.getCollection("scenarios").remove(getDateDBObject(date));
+        mongoTemplate.getCollection("scenarios").deleteMany(getDateDBObject(date));
     }
 
     private void deleteIntellisenseOlderThanThisDate(Date date) {
-        mongoTemplate.getCollection("intellisense").remove(getDateDBObject(date));
+        mongoTemplate.getCollection("intellisense").deleteMany(getDateDBObject(date));
     }
 
     private void deleteScreenShotsOlderThanThisDate(Date dateForQuery) {
@@ -67,8 +67,8 @@ public class SweeperController {
         gridFsOperations.delete(gridFsQuery);
     }
 
-    private DBObject getDateDBObject(Date date) {
-        return new BasicDBObject("created_date", new BasicDBObject("$lte", date));
+    private Bson getDateDBObject(Date date) {
+       return Filters.lte("created_date",date);
     }
 
     private Query getGridFsQuery(Date date) {
