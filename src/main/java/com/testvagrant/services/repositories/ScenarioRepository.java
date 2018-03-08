@@ -22,4 +22,6 @@ public interface ScenarioRepository extends MongoRepository<Scenarios, String> {
     Long countByBuildIdAndStatus(@Param("buildId") ObjectId buildId, @Param("status") String status);
 
     List<Scenarios> findByBuildIdAndDeviceIdAndActivity(@Param("buildId") ObjectId buildId, @Param("deviceId") ObjectId deviceId, @Param("activity") String activity);
+
+    Long removeByBuildId(@Param("buildId") ObjectId buildId);
 }
