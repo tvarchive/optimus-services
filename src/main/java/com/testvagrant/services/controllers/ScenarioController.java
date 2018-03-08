@@ -1,8 +1,6 @@
 package com.testvagrant.services.controllers;
 
 import com.mongodb.client.AggregateIterable;
-import com.mongodb.client.model.Aggregates;
-import com.mongodb.client.model.Projections;
 import com.testvagrant.services.models.Scenarios;
 import com.testvagrant.services.repositories.ScenarioRepository;
 import org.bson.Document;
@@ -19,7 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
+
+import static com.mongodb.client.model.Aggregates.project;
+import static com.mongodb.client.model.Projections.*;
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toCollection;
 
 
 @RestController
@@ -37,12 +42,27 @@ public class ScenarioController {
     @RequestMapping("/scenarios/distinct")
     public List<Document> distinctScenarios() {
         List<Bson> bsons = Arrays.asList(
-                Aggregates.project(Projections.include(Arrays.asList("scenarioName", "dataRowNumber")))
+                project(fields(include("scenarioName", "dataRowNumber","status","created_date"), excludeId()))
+
         );
         AggregateIterable<Document> scenarios1 = mongoTemplate.getCollection("scenarios").aggregate(bsons);
         List<Document> documents = new ArrayList<>();
-        scenarios1.iterator().forEachRemaining(documents::add);
-        return documents;
+        scenarios1.iterator().forEachRemaining(document -> {
+            if(!isADuplicateDocument(documents, document)) {
+                documents.add(document);
+            }
+        });
+        ArrayList<Document> status = documents.stream().collect(collectingAndThen(toCollection(() -> new TreeSet<>(comparing(documen -> documen.getDate("created_date")))),
+                ArrayList::new));
+//        List<Document> collect = documencuments.stream().re().collect(Collectors.toList());
+        return status;
+    }
+
+    private boolean isADuplicateDocument(List<Document> documents, Document document) {
+        return documents.stream().anyMatch(document1 -> {
+            boolean b = document1.get("scenarioName").equals(document.get("scenarioName")) && document1.get("dataRowNumber").equals(document.get("dataRowNumber"));
+            return b;
+        });
     }
 
     @RequestMapping("/scenarios/distinctDeviceId")
