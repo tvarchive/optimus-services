@@ -52,10 +52,11 @@ public class ScenarioController {
                 documents.add(document);
             }
         });
-        ArrayList<Document> status = documents.stream().collect(collectingAndThen(toCollection(() -> new TreeSet<>(comparing(documen -> documen.getDate("created_date")))),
+        ArrayList<Document> filteredDocuments = documents
+                .stream()
+                .collect(collectingAndThen(toCollection(() -> new TreeSet<>(comparing(documen -> documen.getDate("created_date")))),
                 ArrayList::new));
-//        List<Document> collect = documencuments.stream().re().collect(Collectors.toList());
-        return status;
+        return filteredDocuments;
     }
 
     private boolean isADuplicateDocument(List<Document> documents, Document document) {
