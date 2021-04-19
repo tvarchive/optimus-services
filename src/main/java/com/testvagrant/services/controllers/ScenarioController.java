@@ -1,6 +1,7 @@
 package com.testvagrant.services.controllers;
 
 import com.mongodb.client.AggregateIterable;
+import com.testvagrant.services.models.DistinctScenarios;
 import com.testvagrant.services.models.Scenarios;
 import com.testvagrant.services.repositories.ScenarioRepository;
 import org.bson.Document;
@@ -10,15 +11,15 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.Fields;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static com.mongodb.client.model.Aggregates.project;
 import static com.mongodb.client.model.Projections.*;
@@ -39,32 +40,57 @@ public class ScenarioController {
         this.scenarioRepository = scenarioRepository;
     }
 
+
+    @PostMapping("/scenarios/insert")
+    public Scenarios insertScenario(@RequestBody Scenarios scenarios) {
+    System.out.println(scenarios);
+        if(scenarios.getBuildId() ==null && scenarios.getDeviceId() == null ) {
+            return scenarios;
+        }
+        return scenarioRepository.insert(scenarios);
+    }
+
+    @PostMapping("/scenarios/insert/bulk")
+    public List<Scenarios> insertScenario(@RequestBody List<Scenarios> scenarios) {
+        return scenarioRepository.insert(scenarios);
+    }
+
     @RequestMapping("/scenarios/distinct")
-    public List<Document> distinctScenarios() {
+    public List<Scenarios> distinctScenarios() {
         List<Bson> bsons = Arrays.asList(
-                project(fields(include("scenarioName", "dataRowNumber","status","created_date"), excludeId()))
+                project(fields(include("scenarioName", "dataRowNumber","status"), excludeId()))
 
         );
         AggregateIterable<Document> scenarios1 = mongoTemplate.getCollection("scenarios").aggregate(bsons);
-        List<Document> documents = new ArrayList<>();
-        scenarios1.iterator().forEachRemaining(document -> {
-            if(!isADuplicateDocument(documents, document)) {
-                documents.add(document);
-            }
-        });
-        ArrayList<Document> filteredDocuments = documents
+        List<Scenarios> documents = new ArrayList<>();
+        documents = StreamSupport.stream(scenarios1.spliterator(), true).map(document -> {
+            Scenarios scenarios = new Scenarios();
+            scenarios.setScenarioName(document.getString("scenarioName"));
+            scenarios.setDataRowNumber(document.getInteger("dataRowNumber"));
+            scenarios.setStatus(document.getString("status"));
+            scenarios.setCreated_date(document.getDate("created_date"));
+            return scenarios;
+        }).collect(Collectors.toList());
+        ArrayList<Scenarios> filteredDocuments = documents
                 .stream()
-                .collect(collectingAndThen(toCollection(() -> new TreeSet<>(comparing(documen -> documen.getDate("created_date")))),
+                .collect(collectingAndThen(toCollection(() -> new TreeSet<>(comparing(Scenarios::getScenarioName))),
                 ArrayList::new));
         return filteredDocuments;
     }
 
-    private boolean isADuplicateDocument(List<Document> documents, Document document) {
-        return documents.stream().anyMatch(document1 -> {
-            boolean b = document1.get("scenarioName").equals(document.get("scenarioName")) && document1.get("dataRowNumber").equals(document.get("dataRowNumber"));
-            return b;
-        });
+    @RequestMapping("/scenarios/distinct/count")
+    public DistinctScenarios distinctScenariosCount() {
+        List<Scenarios> filteredDocuments = distinctScenarios();
+        DistinctScenarios distinctScenarios = new DistinctScenarios();
+        distinctScenarios.setDistinctScenariosCount(filteredDocuments.size());
+        int passedScenariosCount = filteredDocuments.stream().filter(scenario -> scenario.getStatus().equalsIgnoreCase("passed")).collect(Collectors.toList()).size();
+        float pass_percentage = (passedScenariosCount*100.0f)/filteredDocuments.size();
+        DecimalFormat df = new DecimalFormat("#.0");
+        String passRate = df.format(pass_percentage);
+        distinctScenarios.setPassPercentage(passRate);
+        return distinctScenarios;
     }
+
 
     @RequestMapping("/scenarios/distinctDeviceId")
     public List<Scenarios> distinctdeviceIdsOfScenario(@RequestParam("buildId")ObjectId buildId) {
@@ -76,5 +102,7 @@ public class ScenarioController {
             return new ArrayList<Scenarios>();
         }
     }
+
+
 
 }

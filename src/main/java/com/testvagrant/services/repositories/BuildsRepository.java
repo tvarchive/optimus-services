@@ -18,5 +18,7 @@ public interface BuildsRepository extends MongoRepository<Builds,String> {
 
     List<Builds> findAllBuildsByScenariosCount(@Param("scenariosCount") int scenariosCount);
 
+    List<Builds> findAllBuildsByComplete(@Param("complete") boolean scenariosCount);
+
     Long removeByScenariosCount(@Param("scenariosCount") int scenariosCount);
 }

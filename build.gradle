@@ -1,53 +1,44 @@
-group 'com.testvagrant'
-version '1.0'
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'org.springframework.boot'
-
-
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.0.RELEASE")
-    }
+plugins {
+    id 'org.springframework.boot' version '2.2.5.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
+    id "com.palantir.docker" version "0.25.0"
 }
 
-jar {
-    baseName = 'optimusio-data-rest'
-    version = '0.1.0'
-}
+group = 'com.testvagrant.optimusservices'
+version = '0.0.1-SNAPSHOT'
 
 repositories {
     mavenCentral()
-}
-
-configurations {
-    dev
+    jcenter()
 }
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-data-rest:2.0.0.RELEASE")
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb', version: '2.0.0.RELEASE'
-    compile 'org.springframework.restdocs:spring-restdocs-mockmvc:2.0.0.RELEASE'
-    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.0.0.RELEASE'
-    testCompile 'io.rest-assured:rest-assured:3.0.6'
-    dev("org.springframework.boot:spring-boot-devtools:2.0.0.RELEASE")
+    implementation 'com.google.guava:guava:28.0-jre'
+    implementation("org.springframework.boot:spring-boot-starter-data-rest:2.0.0.RELEASE")
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb', version: '2.0.0.RELEASE'
+    implementation 'org.springframework.restdocs:spring-restdocs-mockmvc:2.0.0.RELEASE'
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.0.0.RELEASE'
+    testImplementation 'io.rest-assured:rest-assured:3.0.6'
+    //lombok
+    implementation('org.projectlombok:lombok:1.18.12')
+    annotationProcessor('org.projectlombok:lombok:1.18.12')
+    testImplementation('org.projectlombok:lombok:1.18.12')
+    testAnnotationProcessor('org.projectlombok:lombok:1.18.12')
+
+    implementation('net.coobird:thumbnailator:0.4.8')
 }
 
-bootRun {
 
-    classpath = sourceSets.main.runtimeClasspath + configurations.dev
+docker {
+    dependsOn build
+    name "testvagrant/${bootJar.baseName}"
+    files bootJar.archivePath
+    buildArgs(['JAR_FILE': "${bootJar.archiveName}"])
 }
 
 
-jar {
-    baseName = "optimus-services"
-    version = "1.0"
-}

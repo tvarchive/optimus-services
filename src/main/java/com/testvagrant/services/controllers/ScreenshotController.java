@@ -2,6 +2,8 @@ package com.testvagrant.services.controllers;
 
 import com.mongodb.client.gridfs.GridFSFindIterable;
 import com.testvagrant.services.entities.Screenshot;
+import com.testvagrant.services.utils.ImageResizer;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.GridFsOperations;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 
@@ -25,8 +28,10 @@ public class ScreenshotController {
     }
 
     @RequestMapping("/screenshots")
-    public String storeScreenshot(@RequestBody Screenshot screenshot) {
-        InputStream inputStream = new ByteArrayInputStream(screenshot.getData());
+    public String storeScreenshot(@RequestBody Screenshot screenshot) throws IOException {
+        byte[] originalData = screenshot.getData();
+        byte[] resizeData = new ImageResizer(originalData).resizeImage();
+        InputStream inputStream = new ByteArrayInputStream(resizeData);
         gridFsOperations.store(inputStream, screenshot.getFileName());
         return screenshot.getFileName();
     }
@@ -35,7 +40,6 @@ public class ScreenshotController {
     public String deleteScreenshot() {
         Query query = new Query();
         query.addCriteria(Criteria.where("uploadDate").lt(new Date()));
-        System.out.println(query);
         GridFSFindIterable gridFSDBFiles = gridFsOperations.find(query);
         gridFsOperations.delete(query);
         return String.valueOf(gridFSDBFiles.spliterator().getExactSizeIfKnown());

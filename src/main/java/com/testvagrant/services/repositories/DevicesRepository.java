@@ -11,8 +11,6 @@ import java.util.List;
 @RepositoryRestResource(collectionResourceRel = "devices", path = "devices")
 public interface DevicesRepository extends MongoRepository<Devices,String> {
 
-     Devices findByBuildIdAndUdid(@Param("buildId") ObjectId buildId, @Param("udid") String udid);
-
      List<Devices> findAllByBuildId(@Param("buildId") ObjectId buildId);
 
      Long removeByBuildId(@Param("buildId") ObjectId buildId);

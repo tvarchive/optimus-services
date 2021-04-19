@@ -1,102 +1,25 @@
 package com.testvagrant.services.models;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Document
+@Getter @Setter
 public class Builds {
-
     @Id private String id;
-    private String runMode;
-    private Date buildStartTime;
-    private Date buildEndTime;
-    private int buildScenarios;
-    private int buildSuccessRate;
-    private int scenariosCount;
-    private String scenarioSuccessRate;
-    private String crashlytics;
-    private Date created_date = new Date();
-
-
-    public String getRunMode() {
-        return runMode;
-    }
-
-    public void setRunMode(String runMode) {
-        this.runMode = runMode;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Date getBuildStartTime() {
-        return buildStartTime;
-    }
-
-    public void setBuildStartTime(Date buildStartTime) {
-        this.buildStartTime = buildStartTime;
-    }
-
-    public Date getBuildEndTime() {
-        return buildEndTime;
-    }
-
-    public void setBuildEndTime(Date buildEndTime) {
-        this.buildEndTime = buildEndTime;
-    }
-
-    public int getScenariosCount() {
-        return scenariosCount;
-    }
-
-    public void setScenariosCount(int scenariosCount) {
-        this.scenariosCount = scenariosCount;
-    }
-
-    public int getBuildScenarios() {
-        return buildScenarios;
-    }
-
-    public void setBuildScenarios(int buildScenarios) {
-        this.buildScenarios = buildScenarios;
-    }
-
-    public int getBuildSuccessRate() {
-        return buildSuccessRate;
-    }
-
-    public void setBuildSuccessRate(int buildSuccessRate) {
-        this.buildSuccessRate = buildSuccessRate;
-    }
-
-    public String getScenarioSuccessRate() {
-        return scenarioSuccessRate;
-    }
-
-    public void setScenarioSuccessRate(String scenarioSuccessRate) {
-        this.scenarioSuccessRate = scenarioSuccessRate;
-    }
-
-    public String getCrashlytics() {
-        return crashlytics;
-    }
-
-    public void setCrashlytics(String crashlytics) {
-        this.crashlytics = crashlytics;
-    }
-
-    public Date getCreated_date() {
-        return created_date;
-    }
-
-    public void setCreated_date(Date created_date) {
-        this.created_date = created_date;
-    }
+    private String runMode = "Distribution";
+    private LocalDateTime buildStartTime = LocalDateTime.now();
+    private LocalDateTime buildEndTime = LocalDateTime.now();
+    private int buildScenarios = 0;
+    private int buildSuccessRate = 0;
+    private int scenariosCount = 0;
+    private String scenarioSuccessRate = "0.0";
+    private String crashlytics ="";
+    private LocalDateTime created_date = LocalDateTime.now();
+    private boolean complete = false;
 }
