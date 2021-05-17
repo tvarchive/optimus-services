@@ -30,8 +30,8 @@ public class ScreenshotController {
     @RequestMapping("/screenshots")
     public String storeScreenshot(@RequestBody Screenshot screenshot) throws IOException {
         byte[] originalData = screenshot.getData();
-        byte[] resizeData = new ImageResizer(originalData).resizeImage();
-        InputStream inputStream = new ByteArrayInputStream(resizeData);
+//        byte[] resizeData = new ImageResizer(originalData).resizeImage(); TODO: Expose resize option in docker variables
+        InputStream inputStream = new ByteArrayInputStream(originalData);
         gridFsOperations.store(inputStream, screenshot.getFileName());
         return screenshot.getFileName();
     }

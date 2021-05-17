@@ -69,7 +69,11 @@ public class ImageResizer {
     public byte[] resizeImage() throws IOException {
         InputStream is = new ByteArrayInputStream(imageBytes);
         BufferedImage originalImage = ImageIO.read(is);
-        BufferedImage resizeImage = Thumbnails.of(originalImage).scale(scalingFactor).scalingMode(ScalingMode.BICUBIC).alphaInterpolation(AlphaInterpolation.QUALITY).asBufferedImage();
+        BufferedImage resizeImage = Thumbnails.of(originalImage)
+                .scale(scalingFactor)
+                .scalingMode(ScalingMode.PROGRESSIVE_BILINEAR)
+                .alphaInterpolation(AlphaInterpolation.QUALITY)
+                .asBufferedImage();
         return getImageBytes(resizeImage);
     }
 
