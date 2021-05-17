@@ -22,4 +22,7 @@ public class Builds {
     private String crashlytics ="";
     private LocalDateTime created_date = LocalDateTime.now();
     private boolean complete = false;
+    private String commitId = "";
+    private String commitUrl  = "";
+    private String target = "mobile";
 }
